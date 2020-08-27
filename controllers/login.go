@@ -33,18 +33,16 @@ func (c *LoginController) Post() {
 		fmt.Println("Error parsing form user login")
 		c.Redirect("index", 303)
 	}
-	fmt.Println(u)
 
 	user, err := new(models.User).GetByUserNameAndPassword(u.Username.(string), u.Password.(string))
 	fmt.Println(user)
 	if err != nil {
 		fmt.Println(err)
-		c.Redirect("index", 303)
 	} else {
 		c.SetSession("user", user)
-		c.Redirect("index", 303)
 	}
 	c.TplName = "login.tpl"
+	c.Redirect("index", 303)
 }
 
 // Logout function
