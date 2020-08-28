@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-
 	"github.com/astaxie/beego/orm"
 )
 
@@ -21,14 +19,9 @@ func init() {
 	orm.RegisterModel(new(User))
 }
 
-// GetByUserNameAndPassword ...
-func (u *User) GetByUserNameAndPassword(username string, password string) (*User, error) {
-	var user User
-	qs := orm.NewOrm().QueryTable(new(User))
-	err := qs.Filter("Username", username).Filter("Password", password).One(&user)
-	if err == orm.ErrNoRows {
-		return nil, fmt.Errorf("User not found")
-	}
-
-	return &user, nil
+// GetByUsername ...
+func GetByUsername(username string) *User {
+	user := User{Username: username}
+	orm.NewOrm().Read(&user, "Username")
+	return &user
 }

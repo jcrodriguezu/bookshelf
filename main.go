@@ -24,7 +24,7 @@ func startDb() error {
 	// Print log.
 	verbose := true
 	// Debug
-	orm.Debug = true
+	orm.Debug = false
 	// Error.
 	err := orm.RunSyncdb(name, force, verbose)
 

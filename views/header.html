@@ -1,3 +1,11 @@
+{{if .flash.error}}
+<blockquote>{{.flash.error}}</blockquote>
+{{end}}
+
+{{if .flash.notice}}
+<blockquote>{{.flash.notice}}</blockquote>
+{{end}}
+
 <header>
     <h1 class="logo">Welcome to the Beego Bookshelf</h1>
 </header>

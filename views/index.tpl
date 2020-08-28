@@ -7,7 +7,7 @@
 </head>
 
 <body>
-  {{ template "header.html" }}
+  {{ template "header.html" . }}
   <div class="detail">
     {{ $isUserLogged := .IsUserLogged }}
     {{ $userRole := .UserRole }}

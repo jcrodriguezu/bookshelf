@@ -1,8 +1,7 @@
 package controllers
 
 import (
-	"bookshelf/models"
-	"fmt"
+	"bookshelf/forms"
 
 	"github.com/astaxie/beego"
 )
@@ -10,11 +9,6 @@ import (
 // LoginController struct
 type LoginController struct {
 	beego.Controller
-}
-
-type loginForm struct {
-	Username interface{} `form:"username"`
-	Password interface{} `form:"password"`
 }
 
 // Get Login function
@@ -28,19 +22,29 @@ func (c *LoginController) Get() {
 
 // Post Login function
 func (c *LoginController) Post() {
-	u := loginForm{}
-	if err := c.ParseForm(&u); err != nil {
-		fmt.Println("Error parsing form user login")
+	flash := beego.NewFlash()
+	loginForm := forms.LoginForm{}
+	if err := c.ParseForm(&loginForm); err != nil {
+		beego.Info(err)
+		flash.Error(err.Error())
+		flash.Store(&c.Controller)
 		c.Redirect("index", 303)
 	}
 
-	user, err := new(models.User).GetByUserNameAndPassword(u.Username.(string), u.Password.(string))
-	fmt.Println(user)
+	user, err := loginForm.DoLogin()
 	if err != nil {
-		fmt.Println(err)
-	} else {
-		c.SetSession("user", user)
+		beego.Info(err)
+		flash.Error(err.Error())
+		flash.Store(&c.Controller)
 	}
+
+	if user != nil {
+		c.SetSession("user", user)
+		beego.Info("User login success")
+		flash.Notice("Login success")
+		flash.Store(&c.Controller)
+	}
+
 	c.TplName = "login.tpl"
 	c.Redirect("index", 303)
 }
