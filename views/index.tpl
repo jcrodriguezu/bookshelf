@@ -13,7 +13,7 @@
     {{ $userRole := .UserRole }}
     <div>
     {{ if $isUserLogged }}
-    Welcome back {{ .UserName }} | <a href="{{ urlfor "LoginController.Logout"}}">Logout</a>
+    Welcome back <b>{{ .UserName }}</b> | <a href="{{ urlfor "LoginController.Logout"}}">Logout</a>
     {{ else }}
     <a href="{{ urlfor "LoginController.Get"}}">Login</a>
     {{ end }}
@@ -37,9 +37,9 @@
         <td>{{.AvailableCopies}}</td>
         {{ if $isUserLogged }}
         {{ if eq $userRole "adm" }}
-        <td>Edit | Delete</td>
-        {{ else if eq $userRole "usr" }}
-        <td>Review</td>
+        <td><a href="">Edit</a> | <a href="">Delete</a></td>
+        {{ else }}
+        <td><a href="">Lend a copy</a></td>
         {{ end }}
         {{ end }}
       </tr>
@@ -48,6 +48,13 @@
     {{ else }}
       No books available
     {{ end }}
+  </div>
+  <div>
+  {{ if $isUserLogged }}
+  {{ if eq $userRole "adm" }}
+  <a href="{{ urlfor "BookController.Get" }}">Add new book</a>
+  {{ end }}
+  {{ end }}
   </div>
   {{ template "footer.html" }}
 </body>

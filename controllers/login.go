@@ -31,18 +31,19 @@ func (c *LoginController) Post() {
 		c.Redirect("index", 303)
 	}
 
-	user, err := loginForm.DoLogin()
+	user, err := loginForm.GetData()
 	if err != nil {
 		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	}
 
-	if user != nil {
-		c.SetSession("user", user)
-		beego.Info("User login success")
-		flash.Notice("Login success")
+	if err := user.DoLogin(); err != nil {
+		beego.Info(err)
+		flash.Error(err.Error())
 		flash.Store(&c.Controller)
+	} else {
+		c.SetSession("user", user)
 	}
 
 	c.TplName = "login.tpl"

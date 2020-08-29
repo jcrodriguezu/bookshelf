@@ -39,16 +39,31 @@ func initialData() {
 	o := orm.NewOrm()
 	o.Using("default")
 
-	r := new(models.Role)
-	r.Name = "usr"
-	fmt.Println(o.Insert(r))
+	ra := new(models.Role)
+	ra.Id = 0
+	ra.Name = "adm"
+	fmt.Println(o.Insert(ra))
 
-	u := new(models.User)
-	u.Name = "Juanca"
-	u.Username = "juanca"
-	u.Password = "juanca"
-	u.Role = r
-	fmt.Println(o.Insert(u))
+	u1 := new(models.User)
+	u1.Id = 0
+	u1.Name = "Juanca"
+	u1.Username = "juanca"
+	u1.Password = "juanca"
+	u1.Role = ra
+	fmt.Println(o.Insert(u1))
+
+	ru := new(models.Role)
+	ru.Id = 1
+	ru.Name = "usr"
+	fmt.Println(o.Insert(ru))
+
+	u2 := new(models.User)
+	u2.Id = 1
+	u2.Name = "test"
+	u2.Username = "test"
+	u2.Password = "test"
+	u2.Role = ru
+	fmt.Println(o.Insert(u2))
 
 	b := new(models.Book)
 	b.Author = "Popeye"

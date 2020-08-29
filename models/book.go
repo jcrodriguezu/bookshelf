@@ -37,3 +37,14 @@ func (b *Book) All() []*Book {
 
 	return books
 }
+
+// Insert ...
+func (b *Book) Insert() error {
+	o := orm.NewOrm()
+
+	if _, err := o.Insert(b); err != nil {
+		return fmt.Errorf(err.Error())
+	}
+
+	return nil
+}

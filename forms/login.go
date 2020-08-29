@@ -16,17 +16,15 @@ func (f *LoginForm) IsValid() bool {
 	return f.Username != nil && f.Password != nil
 }
 
-// DoLogin ...
-func (f *LoginForm) DoLogin() (*models.User, error) {
+// GetData ...
+func (f *LoginForm) GetData() (*models.User, error) {
 	if !f.IsValid() {
 		return nil, fmt.Errorf("Username and Password can't be empty")
 	}
 
-	user := models.GetByUsername(f.Username.(string))
-	// TODO user.Password shouldn't be un plain text
-	if user != nil && user.Password == f.Password.(string) {
-		return user, nil
-	}
+	u := new(models.User)
+	u.Username = f.Username.(string)
+	u.Password = f.Password.(string)
 
-	return nil, fmt.Errorf("Wrong Username or Password")
+	return u, nil
 }

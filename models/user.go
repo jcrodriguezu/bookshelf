@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+
 	"github.com/astaxie/beego/orm"
 )
 
@@ -19,9 +21,19 @@ func init() {
 	orm.RegisterModel(new(User))
 }
 
-// GetByUsername ...
-func GetByUsername(username string) *User {
-	user := User{Username: username}
-	orm.NewOrm().Read(&user, "Username")
-	return &user
+// DoLogin ...
+func (u *User) DoLogin() error {
+	pass := u.Password
+
+	o := orm.NewOrm()
+	o.Read(u, "Username")
+	// TODO user.Password shouldn't be un plain text
+	if u != nil && u.Password == pass {
+		if _, err := o.LoadRelated(u, "Role"); err != nil {
+			return fmt.Errorf("Error loading role for user")
+		}
+		return nil
+	}
+
+	return fmt.Errorf("Wrong Username or Password")
 }

@@ -25,3 +25,5 @@ bee.json
 
 # project binari
 bookshelf
+.vscode/settings.json
+bookshelf.db
