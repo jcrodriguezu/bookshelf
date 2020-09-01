@@ -7,7 +7,15 @@
 </head>
 
 <body>
+  {{if .flash.error}}
+  <blockquote>{{.flash.error}}</blockquote>
+  {{end}}
+  {{if .flash.notice}}
+  <blockquote>{{.flash.notice}}</blockquote>
+  {{end}}
+
   {{ template "header.html" . }}
+  
   <div class="detail">
     {{ $isUserLogged := .IsUserLogged }}
     {{ $userRole := .UserRole }}
@@ -37,7 +45,7 @@
         <td>{{.AvailableCopies}}</td>
         {{ if $isUserLogged }}
         {{ if eq $userRole "adm" }}
-        <td><a href="">Edit</a> | <a href="">Delete</a></td>
+        <td><a href="">Edit</a> | <a href="{{ urlfor "BookController.Remove" "id" .Id }}">Delete</a></td>
         {{ else }}
         <td><a href="">Lend a copy</a></td>
         {{ end }}

@@ -8,7 +8,7 @@ import (
 
 // User model.
 type User struct {
-	Id        int       `orm:"pk"`
+	Id        int       `orm:"pk, auto"`
 	Name      string    `orm:"unique"`
 	Username  string    `orm:"unique"`
 	Password  string    `orm:"unique"`
@@ -22,19 +22,20 @@ func init() {
 }
 
 // DoLogin ...
-func (u *User) DoLogin(username string, password string) (*User, error) {
-	toCheck := &User{Username: username}
+func (u *User) DoLogin() error {
+	pass := u.Password
+	u.Password = ""
 
 	o := orm.NewOrm()
-	err := o.Read(toCheck, "Username")
+	err := o.Read(u, "Username")
 
 	// TODO user.Password shouldn't be un plain text
-	if err == nil && password == toCheck.Password {
-		if _, err := o.LoadRelated(toCheck, "Role"); err != nil {
-			return nil, fmt.Errorf("Error loading role for user")
+	if err == nil && u.Password == pass {
+		if _, err := o.LoadRelated(u, "Role"); err != nil {
+			return fmt.Errorf("Error loading role for user")
 		}
-		return toCheck, nil
+		return nil
 	}
 
-	return nil, fmt.Errorf("Wrong Username or Password")
+	return fmt.Errorf("Wrong Username or Password")
 }

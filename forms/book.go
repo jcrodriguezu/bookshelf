@@ -3,34 +3,34 @@ package forms
 import (
 	"bookshelf/models"
 	"fmt"
+
+	valid "github.com/asaskevich/govalidator"
 )
 
 // BookForm ...
 type BookForm struct {
-	Title  interface{} `form:"title"`
-	Author interface{} `form:"author"`
-	Copies interface{} `form:"copies"`
+	Title  interface{} `form:"title" valid:"required"`
+	Author interface{} `form:"author" valid:"required"`
+	Copies interface{} `form:"copies" valid:"int, required"`
 }
 
-// IsValid ...
-func (f *BookForm) IsValid() bool {
-	return f.Title != nil && f.Author != nil
-}
-
-// DoCreate ...
-func (f *BookForm) DoCreate() (*models.Book, error) {
-	if !f.IsValid() {
-		return nil, fmt.Errorf("Title and Author can't be empty")
+// GetData ...
+func (f *BookForm) GetData() (*models.Book, error) {
+	isValid, err := valid.ValidateStruct(f)
+	if !isValid {
+		return nil, fmt.Errorf("All the fields are required")
 	}
 
-	b := new(models.Book)
-	b.Title = f.Title.(string)
-	b.Author = f.Author.(string)
-	b.Copies = f.Copies.(int)
-
-	if err := b.Insert(); err != nil {
-		return nil, err
+	copies, err := valid.ToInt(f.Copies)
+	if err != nil {
+		return nil, fmt.Errorf("Number of copies should be a number greater than 0")
 	}
 
-	return b, nil
+	book := &models.Book{
+		Title:  f.Title.(string),
+		Author: f.Author.(string),
+		Copies: int(copies),
+	}
+
+	return book, nil
 }

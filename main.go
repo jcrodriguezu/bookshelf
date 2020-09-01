@@ -40,12 +40,10 @@ func initialData() {
 	o.Using("default")
 
 	ra := new(models.Role)
-	ra.Id = 0
 	ra.Name = "adm"
 	fmt.Println(o.Insert(ra))
 
 	u1 := new(models.User)
-	u1.Id = 0
 	u1.Name = "Juanca"
 	u1.Username = "juanca"
 	u1.Password = "juanca"
@@ -53,12 +51,10 @@ func initialData() {
 	fmt.Println(o.Insert(u1))
 
 	ru := new(models.Role)
-	ru.Id = 1
 	ru.Name = "usr"
 	fmt.Println(o.Insert(ru))
 
 	u2 := new(models.User)
-	u2.Id = 1
 	u2.Name = "test"
 	u2.Username = "test"
 	u2.Password = "test"

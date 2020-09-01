@@ -4,17 +4,21 @@
     {{ template "head.html" }}
 </head>
 <body>
+    {{if .flash.error}}
+    <blockquote>{{.flash.error}}</blockquote>
+    {{end}}
+
+    {{if .flash.notice}}
+    <blockquote>{{.flash.notice}}</blockquote>
+    {{end}}
+
     {{ template "header.html" }}
+
     <div class="detail">
         <a href="index">Return</a><br><br>
         <form action="{{ urlfor "BookController.Post" }}" method="post">
-            Title:
-            <input type="text" name="title" value="" /><br />
-            Author:
-            <input type="text" name="author" value="" /><br />
-            # Copies:
-            <input type="text" name="copies" value="" /><br />
-
+            {{.Form | renderform}}
+            <br />
             <input type="submit" value="Create" />
         </form>
     </div>

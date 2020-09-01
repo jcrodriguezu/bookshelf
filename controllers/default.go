@@ -13,9 +13,8 @@ type MainController struct {
 
 // Get method
 func (c *MainController) Get() {
-	flash := beego.ReadFromRequest(&c.Controller)
-	c.Data["errors"] = flash.Data["error"]
-	c.Data["notices"] = flash.Data["notice"]
+	fd := beego.ReadFromRequest(&c.Controller)
+	c.Data["flash"] = fd.Data
 
 	user := c.GetSession("user")
 	c.Data["IsUserLogged"] = user != nil

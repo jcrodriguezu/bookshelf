@@ -8,7 +8,7 @@ import (
 
 // Book model
 type Book struct {
-	Id      int `orm:"pk"`
+	Id      int `orm:"pk, auto"`
 	Title   string
 	Author  string
 	Copies  int       `orm:"default(0)"`
@@ -43,7 +43,18 @@ func (b *Book) Insert() error {
 	o := orm.NewOrm()
 
 	if _, err := o.Insert(b); err != nil {
-		return fmt.Errorf(err.Error())
+		return err
+	}
+
+	return nil
+}
+
+// Delete ...
+func (b *Book) Delete() error {
+	o := orm.NewOrm()
+
+	if _, err := o.Delete(b); err != nil {
+		return err
 	}
 
 	return nil

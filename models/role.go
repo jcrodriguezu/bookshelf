@@ -6,7 +6,7 @@ import (
 
 // Role model
 type Role struct {
-	Id   int    `orm:"pk"`
+	Id   int    `orm:"pk, auto"`
 	Name string `orm:"unique"`
 	User *User  `orm:"reverse(one)"`
 }

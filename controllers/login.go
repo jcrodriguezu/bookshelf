@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"bookshelf/forms"
-	"bookshelf/models"
 
 	"github.com/astaxie/beego"
 )
@@ -14,9 +13,17 @@ type LoginController struct {
 
 // Get Login function
 func (c *LoginController) Get() {
+	fd := beego.ReadFromRequest(&c.Controller)
+	c.Data["flash"] = fd.Data
+
 	user := c.GetSession("user")
 	if user != nil {
 		c.Redirect("index", 307)
+	}
+
+	c.Data["Form"] = &forms.LoginForm{
+		Username: "",
+		Password: "",
 	}
 	c.TplName = "login.tpl"
 }
@@ -30,26 +37,25 @@ func (c *LoginController) Post() {
 		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
-		c.Redirect("index", 303)
 	}
 
-	uname, upass, err := loginForm.GetData()
+	user, err := loginForm.GetData()
 	if err != nil {
 		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	} else {
-		user, err := new(models.User).DoLogin(uname, upass)
-		if err != nil {
+		if err := user.DoLogin(); err != nil {
 			beego.Info(err)
 			flash.Error(err.Error())
 			flash.Store(&c.Controller)
 		} else {
 			c.SetSession("user", user)
+			c.Redirect("index", 303)
 		}
 	}
 
-	c.Redirect("index", 303)
+	c.Redirect("login", 303)
 }
 
 // Logout function

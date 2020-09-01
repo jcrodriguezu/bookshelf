@@ -6,7 +6,7 @@ import (
 
 // Review model
 type Review struct {
-	Id    int `orm:"pk"`
+	Id    int `orm:"pk, auto"`
 	Title string
 	Body  string
 	Book  *Book `orm:"rel(fk)"`
