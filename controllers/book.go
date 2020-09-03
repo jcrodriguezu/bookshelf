@@ -22,11 +22,7 @@ func (c *BookController) Get() {
 		c.Redirect("index", 307)
 	}
 
-	c.Data["Form"] = &forms.BookForm{
-		Title:  "",
-		Author: "",
-		Copies: "",
-	}
+	c.Data["Form"] = &forms.BookForm{}
 	c.TplName = "book.tpl"
 }
 

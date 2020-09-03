@@ -9,8 +9,8 @@ import (
 
 // LoginForm ...
 type LoginForm struct {
-	Username interface{} `form:"username" valid:"required"`
-	Password interface{} `form:"password" valid:"required"`
+	Username string `form:"username" valid:"required"`
+	Password string `form:"password" valid:"required"`
 }
 
 // GetData ...
@@ -21,8 +21,8 @@ func (f *LoginForm) GetData() (*models.User, error) {
 	}
 
 	user := &models.User{
-		Username: f.Username.(string),
-		Password: f.Password.(string),
+		Username: f.Username,
+		Password: f.Password,
 	}
 	return user, nil
 }

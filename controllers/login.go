@@ -21,10 +21,7 @@ func (c *LoginController) Get() {
 		c.Redirect("index", 307)
 	}
 
-	c.Data["Form"] = &forms.LoginForm{
-		Username: "",
-		Password: "",
-	}
+	c.Data["Form"] = &forms.LoginForm{}
 	c.TplName = "login.tpl"
 }
 
