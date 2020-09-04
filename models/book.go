@@ -38,11 +38,33 @@ func (b *Book) All() []*Book {
 	return books
 }
 
+// GetById ...
+func (b *Book) GetById(id int) error {
+	b.Id = id
+	o := orm.NewOrm()
+
+	if err := o.Read(b); err != nil {
+		return err
+	}
+	return nil
+}
+
 // Insert ...
 func (b *Book) Insert() error {
 	o := orm.NewOrm()
 
 	if _, err := o.Insert(b); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Update ...
+func (b *Book) Update() error {
+	o := orm.NewOrm()
+
+	if _, err := o.Update(b); err != nil {
 		return err
 	}
 

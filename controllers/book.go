@@ -22,12 +22,34 @@ func (c *BookController) Get() {
 		c.Redirect("index", 307)
 	}
 
-	c.Data["Form"] = &forms.BookForm{}
+	bookform := &forms.BookForm{}
+	c.Data["Action"] = "BookController.New"
+
+	id, err := c.GetInt("id")
+	if err == nil {
+		book := &models.Book{Id: id}
+		if err := book.GetById(id); err != nil {
+			flash := beego.NewFlash()
+			beego.Info(err)
+			flash.Error(err.Error())
+			flash.Store(&c.Controller)
+		} else {
+			c.Data["Action"] = "BookController.Edit"
+			bookform = &forms.BookForm{
+				Id:     book.Id,
+				Title:  book.Title,
+				Author: book.Author,
+				Copies: book.Copies,
+			}
+		}
+	}
+
+	c.Data["Form"] = bookform
 	c.TplName = "book.tpl"
 }
 
-// Post new book
-func (c *BookController) Post() {
+// New book
+func (c *BookController) New() {
 	flash := beego.NewFlash()
 
 	bookForm := forms.BookForm{}
@@ -38,7 +60,7 @@ func (c *BookController) Post() {
 		c.Redirect("index", 303)
 	}
 
-	book, err := bookForm.GetData()
+	book, err := bookForm.ToModel()
 	if err != nil {
 		beego.Info(err)
 		flash.Error(err.Error())
@@ -56,7 +78,42 @@ func (c *BookController) Post() {
 	c.Redirect("book", 303)
 }
 
-// Remove ...
+// Edit book
+func (c *BookController) Edit() {
+	user := c.GetSession("user")
+	if user == nil {
+		c.Redirect("index", 307)
+	}
+
+	flash := beego.NewFlash()
+
+	bookForm := forms.BookForm{}
+	if err := c.ParseForm(&bookForm); err != nil {
+		beego.Info(err)
+		flash.Error(err.Error())
+		flash.Store(&c.Controller)
+		c.Redirect("index", 303)
+	}
+
+	book, err := bookForm.ToModel()
+	if err != nil {
+		beego.Info(err)
+		flash.Error(err.Error())
+		flash.Store(&c.Controller)
+	} else {
+		if err := book.Update(); err != nil {
+			beego.Info(err)
+			flash.Error(err.Error())
+			flash.Store(&c.Controller)
+		} else {
+			flash.Notice("Book successful updated")
+			flash.Store(&c.Controller)
+		}
+	}
+	c.Redirect("/index", 303)
+}
+
+// Remove book
 func (c *BookController) Remove() {
 	user := c.GetSession("user")
 	if user != nil {

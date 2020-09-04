@@ -13,8 +13,8 @@ type LoginForm struct {
 	Password string `form:"password" valid:"required"`
 }
 
-// GetData ...
-func (f *LoginForm) GetData() (*models.User, error) {
+// ToModel ...
+func (f *LoginForm) ToModel() (*models.User, error) {
 	isValid, _ := valid.ValidateStruct(f)
 	if !isValid {
 		return nil, fmt.Errorf("Username and Password can't be empty")

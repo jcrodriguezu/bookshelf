@@ -16,10 +16,10 @@
 
     <div class="detail">
         <a href="index">Return</a><br><br>
-        <form action="{{ urlfor "BookController.Post" }}" method="post">
+        <form action="{{ urlfor .Action }}" method="post">
             {{.Form | renderform}}
             <br />
-            <input type="submit" value="Create" />
+            <input type="submit" value="Save" />
         </form>
     </div>
     {{ template "footer.html" }}

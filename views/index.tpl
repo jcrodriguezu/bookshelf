@@ -45,7 +45,7 @@
         <td>{{.AvailableCopies}}</td>
         {{ if $isUserLogged }}
         {{ if eq $userRole "adm" }}
-        <td><a href="">Edit</a> | <a href="{{ urlfor "BookController.Remove" "id" .Id }}">Delete</a></td>
+        <td><a href="{{ urlfor "BookController.Get" "id" .Id }}">Edit</a> | <a href="{{ urlfor "BookController.Remove" "id" .Id }}">Delete</a></td>
         {{ else }}
         <td><a href="">Lend a copy</a></td>
         {{ end }}

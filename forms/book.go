@@ -15,8 +15,8 @@ type BookForm struct {
 	Copies int    `form:"copies" valid:"int, required"`
 }
 
-// GetData ...
-func (f *BookForm) GetData() (*models.Book, error) {
+// ToModel ...
+func (f *BookForm) ToModel() (*models.Book, error) {
 	isValid, err := valid.ValidateStruct(f)
 	if !isValid {
 		if err != nil {

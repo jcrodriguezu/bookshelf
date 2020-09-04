@@ -36,7 +36,7 @@ func (c *LoginController) Post() {
 		flash.Store(&c.Controller)
 	}
 
-	user, err := loginForm.GetData()
+	user, err := loginForm.ToModel()
 	if err != nil {
 		beego.Info(err)
 		flash.Error(err.Error())
