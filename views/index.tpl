@@ -19,6 +19,7 @@
   <div class="detail">
     {{ $isUserLogged := .IsUserLogged }}
     {{ $userRole := .UserRole }}
+    {{ $userId := .UserId }}
     <div>
     {{ if $isUserLogged }}
     Welcome back <b>{{ .UserName }}</b> | <a href="{{ urlfor "LoginController.Logout"}}">Logout</a>
@@ -47,7 +48,13 @@
         {{ if eq $userRole "adm" }}
         <td><a href="{{ urlfor "BookController.Get" "id" .Id }}">Edit</a> | <a href="{{ urlfor "BookController.Remove" "id" .Id }}">Delete</a></td>
         {{ else }}
-        <td><a href="">Lend a copy</a></td>
+        <td>
+          {{ if HasBook $userId .Id }}
+          <a href="{{ urlfor "UserBookController.ReturnBook" "bookid" .Id}}">Return</a>
+          {{ else }}
+          <a href="{{ urlfor "UserBookController.LendBook" "bookid" .Id}}">Lend a copy</a>
+          {{ end }}
+        </td>
         {{ end }}
         {{ end }}
       </tr>

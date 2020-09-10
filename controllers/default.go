@@ -20,6 +20,15 @@ func (c *MainController) Get() {
 	c.Data["IsUserLogged"] = user != nil
 	if user != nil {
 		u := user.(*models.User)
+		if err := u.Read(); err != nil {
+			c.DelSession("user")
+			flash := beego.NewFlash()
+			beego.Info(err)
+			flash.Error(err.Error())
+			flash.Store(&c.Controller)
+			c.Redirect("index", 307)
+		}
+		c.Data["UserId"] = u.Id
 		c.Data["UserName"] = u.Name
 		c.Data["UserRole"] = u.Role.Name
 		c.Data["UserBooks"] = u.BooksLent

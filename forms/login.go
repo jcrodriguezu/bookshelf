@@ -10,7 +10,7 @@ import (
 // LoginForm ...
 type LoginForm struct {
 	Username string `form:"username" valid:"required"`
-	Password string `form:"password" valid:"required"`
+	Password string `form:"password,password,Password: " valid:"required"`
 }
 
 // ToModel ...

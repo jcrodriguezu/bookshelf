@@ -22,6 +22,10 @@ func init() {
 
 // AvailableCopies number.
 func (b *Book) AvailableCopies() int {
+	o := orm.NewOrm()
+	if _, err := o.LoadRelated(b, "Users"); err != nil {
+		return 0 // TODO should this return an error too?
+	}
 	return b.Copies - len(b.Users)
 }
 

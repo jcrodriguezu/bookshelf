@@ -16,11 +16,9 @@ func init() {
 	orm.RegisterDataBase("default", "sqlite3", "file:bookshelf.db")
 }
 
-func startDb() error {
+func startDb(force bool) error {
 	// Database alias.
 	name := "default"
-	// Drop table and re-create.
-	force := false
 	// Print log.
 	verbose := true
 	// Debug
@@ -69,9 +67,11 @@ func initialData() {
 }
 
 func main() {
-	if err := startDb(); err != nil {
+	if err := startDb(false); err != nil {
 		panic(err)
 	}
+
+	beego.AddFuncMap("HasBook", models.HasBook)
 
 	beego.Run()
 }

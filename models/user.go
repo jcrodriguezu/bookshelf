@@ -21,6 +21,23 @@ func init() {
 	orm.RegisterModel(new(User))
 }
 
+func (u *User) Read() error {
+	o := orm.NewOrm()
+	if err := o.Read(u); err != nil {
+		return err
+	}
+
+	if _, err := o.LoadRelated(u, "BooksLent"); err != nil {
+		return err
+	}
+
+	if _, err := o.LoadRelated(u, "Role"); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // DoLogin ...
 func (u *User) DoLogin() error {
 	pass := u.Password
@@ -38,4 +55,59 @@ func (u *User) DoLogin() error {
 	}
 
 	return fmt.Errorf("Wrong Username or Password")
+}
+
+// LendBook ...
+func (u *User) LendBook(bookid int) error {
+	book := &Book{Id: bookid}
+	o := orm.NewOrm()
+	if o.QueryM2M(u, "BooksLent").Exist(book) {
+		return fmt.Errorf("User already has the book")
+	}
+
+	if err := o.Read(book); err != nil {
+		return err
+	}
+
+	if book.AvailableCopies() <= 0 {
+		return fmt.Errorf("The book has no copies available")
+	}
+
+	if _, err := o.QueryM2M(u, "BooksLent").Add(book); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ReturnBook ...
+func (u *User) ReturnBook(bookid int) error {
+	book := &Book{Id: bookid}
+
+	o := orm.NewOrm()
+	if !o.QueryM2M(u, "BooksLent").Exist(book) {
+		return fmt.Errorf("User doesn't has the book")
+	}
+
+	if err := o.Read(book); err != nil {
+		return err
+	}
+
+	if _, err := o.QueryM2M(u, "BooksLent").Remove(book); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// HasBook ...
+func HasBook(userid int, bookid int) bool {
+	book := &Book{Id: bookid}
+	user := &User{Id: userid}
+	o := orm.NewOrm()
+	if err := o.Read(user); err != nil {
+		fmt.Println(err)
+		return false
+	}
+	return o.QueryM2M(user, "BooksLent").Exist(book)
 }

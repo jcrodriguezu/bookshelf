@@ -57,7 +57,7 @@ func (c *BookController) New() {
 		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
-		c.Redirect("index", 303)
+		c.Redirect("/index", 303)
 	}
 
 	book, err := bookForm.ToModel()
@@ -75,7 +75,7 @@ func (c *BookController) New() {
 			flash.Store(&c.Controller)
 		}
 	}
-	c.Redirect("book", 303)
+	c.Redirect("/book", 303)
 }
 
 // Edit book
