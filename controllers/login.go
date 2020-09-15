@@ -16,11 +16,6 @@ func (c *LoginController) Get() {
 	fd := beego.ReadFromRequest(&c.Controller)
 	c.Data["flash"] = fd.Data
 
-	user := c.GetSession("user")
-	if user != nil {
-		c.Redirect("index", 307)
-	}
-
 	c.Data["Form"] = &forms.LoginForm{}
 	c.TplName = "login.tpl"
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bookshelf/filters"
 	"bookshelf/models"
 	_ "bookshelf/routers"
 	"fmt"
@@ -71,6 +72,7 @@ func main() {
 		panic(err)
 	}
 
+	beego.InsertFilter("/*", beego.BeforeRouter, filters.LoginFilter)
 	beego.AddFuncMap("HasBook", models.HasBook)
 
 	beego.Run()

@@ -17,11 +17,6 @@ func (c *BookController) Get() {
 	fd := beego.ReadFromRequest(&c.Controller)
 	c.Data["flash"] = fd.Data
 
-	user := c.GetSession("user")
-	if user == nil {
-		c.Redirect("index", 307)
-	}
-
 	bookform := &forms.BookForm{}
 	c.Data["Action"] = "BookController.New"
 

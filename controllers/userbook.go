@@ -14,9 +14,6 @@ type UserBookController struct {
 // LendBook ...
 func (c *UserBookController) LendBook() {
 	user := c.GetSession("user")
-	if user == nil {
-		c.Redirect("/index", 307)
-	}
 
 	flash := beego.NewFlash()
 
@@ -39,9 +36,6 @@ func (c *UserBookController) LendBook() {
 // ReturnBook ...
 func (c *UserBookController) ReturnBook() {
 	user := c.GetSession("user")
-	if user == nil {
-		c.Redirect("/index", 307)
-	}
 
 	flash := beego.NewFlash()
 
