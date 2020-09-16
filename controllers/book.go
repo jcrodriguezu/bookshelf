@@ -23,7 +23,7 @@ func (c *BookController) Get() {
 	id, err := c.GetInt("id")
 	if err == nil {
 		book := &models.Book{Id: id}
-		if err := book.GetById(id); err != nil {
+		if err := book.Read(); err != nil {
 			flash := beego.NewFlash()
 			beego.Info(err)
 			flash.Error(err.Error())
@@ -40,28 +40,28 @@ func (c *BookController) Get() {
 	}
 
 	c.Data["Form"] = bookform
-	c.TplName = "book.tpl"
+	c.TplName = "form.tpl"
 }
 
 // New book
 func (c *BookController) New() {
 	flash := beego.NewFlash()
 
-	bookForm := forms.BookForm{}
-	if err := c.ParseForm(&bookForm); err != nil {
+	bookForm := &forms.BookForm{}
+	if err := c.ParseForm(bookForm); err != nil {
 		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 		c.Redirect("/index", 303)
 	}
 
-	book, err := bookForm.ToModel()
+	book, err := forms.ToModel(bookForm)
 	if err != nil {
 		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	} else {
-		if err := book.Insert(); err != nil {
+		if err := book.(*models.Book).Insert(); err != nil {
 			beego.Info(err)
 			flash.Error(err.Error())
 			flash.Store(&c.Controller)
@@ -82,21 +82,21 @@ func (c *BookController) Edit() {
 
 	flash := beego.NewFlash()
 
-	bookForm := forms.BookForm{}
-	if err := c.ParseForm(&bookForm); err != nil {
+	bookForm := &forms.BookForm{}
+	if err := c.ParseForm(bookForm); err != nil {
 		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 		c.Redirect("index", 303)
 	}
 
-	book, err := bookForm.ToModel()
+	book, err := forms.ToModel(bookForm)
 	if err != nil {
 		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	} else {
-		if err := book.Update(); err != nil {
+		if err := book.(*models.Book).Update(); err != nil {
 			beego.Info(err)
 			flash.Error(err.Error())
 			flash.Store(&c.Controller)

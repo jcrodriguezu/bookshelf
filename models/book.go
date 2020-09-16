@@ -43,8 +43,7 @@ func (b *Book) All() []*Book {
 }
 
 // GetById ...
-func (b *Book) GetById(id int) error {
-	b.Id = id
+func (b *Book) Read() error {
 	o := orm.NewOrm()
 
 	if err := o.Read(b); err != nil {

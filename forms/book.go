@@ -2,9 +2,6 @@ package forms
 
 import (
 	"bookshelf/models"
-	"fmt"
-
-	valid "github.com/asaskevich/govalidator"
 )
 
 // BookForm ...
@@ -16,15 +13,7 @@ type BookForm struct {
 }
 
 // ToModel ...
-func (f *BookForm) ToModel() (*models.Book, error) {
-	isValid, err := valid.ValidateStruct(f)
-	if !isValid {
-		if err != nil {
-			return nil, err
-		}
-		return nil, fmt.Errorf("All the fields are required")
-	}
-
+func (f *BookForm) ToModel() (models.IModel, error) {
 	book := &models.Book{
 		Id:     f.Id,
 		Title:  f.Title,

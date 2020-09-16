@@ -17,4 +17,5 @@ func init() {
 	beego.Router("/book/remove", &controllers.BookController{}, "get:Remove")
 	beego.Router("/user/book/lend", &controllers.UserBookController{}, "*:LendBook")
 	beego.Router("/user/book/return", &controllers.UserBookController{}, "*:ReturnBook")
+	beego.Router("/user/book/review", &controllers.ReviewController{})
 }

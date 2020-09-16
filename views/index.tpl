@@ -50,7 +50,7 @@
         {{ else }}
         <td>
           {{ if HasBook $userId .Id }}
-          <a href="{{ urlfor "UserBookController.ReturnBook" "bookid" .Id}}">Return</a>
+          <a href="{{ urlfor "UserBookController.ReturnBook" "bookid" .Id}}">Return</a> | <a href="{{ urlfor "ReviewController.Get" "bookid" .Id}}">Review</a>
           {{ else }}
           <a href="{{ urlfor "UserBookController.LendBook" "bookid" .Id}}">Lend a copy</a>
           {{ end }}
