@@ -15,7 +15,7 @@
     {{ template "header.html" }}
 
     <div class="detail">
-        <a href="index">Return</a><br><br>
+        <a href="/index">Return</a><br><br>
         <form action="{{ urlfor .Action }}" method="post">
             {{.Form | renderform}}
             <br />

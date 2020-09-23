@@ -17,5 +17,7 @@ func init() {
 	beego.Router("/book/remove", &controllers.BookController{}, "get:Remove")
 	beego.Router("/user/book/lend", &controllers.UserBookController{}, "*:LendBook")
 	beego.Router("/user/book/return", &controllers.UserBookController{}, "*:ReturnBook")
-	beego.Router("/user/book/review", &controllers.ReviewController{})
+	beego.Router("/book/review", &controllers.UserBookReviewController{})
+	beego.Router("/book/review/new", &controllers.UserBookReviewController{}, "post:New")
+	beego.Router("/book/reviews", &controllers.UserBookReviewController{}, "*:Reviews")
 }

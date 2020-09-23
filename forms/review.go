@@ -14,7 +14,7 @@ type ReviewForm struct {
 }
 
 // ToModel ...
-func (f *ReviewForm) ToModel() (*models.Review, error) {
+func (f *ReviewForm) ToModel() (models.IModel, error) {
 	book := &models.Book{Id: f.BookId}
 	if err := book.Read(); err != nil {
 		return nil, err

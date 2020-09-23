@@ -65,3 +65,19 @@
     top: 0px;
     left: 0px;
   }
+
+  .review {
+    text-align: center;
+    font-size: 16px;
+    /* border-style: double; */
+  }
+
+  .review-detail {
+    width: 300px;
+    margin: auto;
+    border: 1px solid red;
+  }
+
+  .review-title {
+    font-weight: bold;
+  }

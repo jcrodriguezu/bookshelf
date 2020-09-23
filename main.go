@@ -65,6 +65,13 @@ func initialData() {
 	b.Copies = 3
 	b.Title = "The new adventures of Popeye"
 	fmt.Println(o.Insert(b))
+
+	rv := new(models.Review)
+	rv.Title = "It's a great book"
+	rv.Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud."
+	rv.User = u2
+	rv.Book = b
+	fmt.Println(o.Insert(rv))
 }
 
 func main() {

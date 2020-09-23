@@ -29,6 +29,15 @@ func (b *Book) AvailableCopies() int {
 	return b.Copies - len(b.Users)
 }
 
+// GetReviews ...
+func (b *Book) GetReviews() []*Review {
+	o := orm.NewOrm()
+	if _, err := o.LoadRelated(b, "Reviews"); err != nil {
+		return nil
+	}
+	return b.Reviews
+}
+
 // All returns the list of all books.
 func (b *Book) All() []*Book {
 	var books []*Book
@@ -49,6 +58,11 @@ func (b *Book) Read() error {
 	if err := o.Read(b); err != nil {
 		return err
 	}
+
+	if _, err := o.LoadRelated(b, "Reviews"); err != nil {
+		return err
+	}
+
 	return nil
 }
 

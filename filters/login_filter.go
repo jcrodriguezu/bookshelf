@@ -19,7 +19,9 @@ var LoginFilter = func(ctx *context.Context) {
 		ctx.Redirect(302, "/")
 	}
 
-	if user != nil || strings.HasPrefix(ctx.Input.URL(), "/login") {
+	if user != nil ||
+		strings.HasPrefix(ctx.Input.URL(), "/login") ||
+		strings.HasPrefix(ctx.Input.URL(), "/book/reviews") {
 		return
 	}
 

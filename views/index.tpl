@@ -34,6 +34,7 @@
         <th>Title</th>
         <th>Author</th>
         <th>Available Copies</th>
+        <th>Reviews</th>
         {{ if $isUserLogged }}
         <th></th>
         {{ end }}
@@ -44,13 +45,20 @@
         <td>{{.Title}}</td>
         <td>{{.Author}}</td>
         <td>{{.AvailableCopies}}</td>
+        <td>
+        {{ if eq (.GetReviews | len) 0 }}
+          {{ 0 }}
+        {{ else }}
+          <a href="{{ urlfor "UserBookReviewController.Reviews" "bookid" .Id}}">{{ .GetReviews | len }}</a>
+        {{ end }}
+        </td>
         {{ if $isUserLogged }}
         {{ if eq $userRole "adm" }}
         <td><a href="{{ urlfor "BookController.Get" "id" .Id }}">Edit</a> | <a href="{{ urlfor "BookController.Remove" "id" .Id }}">Delete</a></td>
         {{ else }}
-        <td>
+        <td> 
           {{ if HasBook $userId .Id }}
-          <a href="{{ urlfor "UserBookController.ReturnBook" "bookid" .Id}}">Return</a> | <a href="{{ urlfor "ReviewController.Get" "bookid" .Id}}">Review</a>
+          <a href="{{ urlfor "UserBookController.ReturnBook" "bookid" .Id}}">Return</a>
           {{ else }}
           <a href="{{ urlfor "UserBookController.LendBook" "bookid" .Id}}">Lend a copy</a>
           {{ end }}
