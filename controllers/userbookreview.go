@@ -20,8 +20,11 @@ func (c *UserBookReviewController) Reviews() {
 		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
-		c.Redirect("/index", 307)
+		c.Redirect(c.URLFor("MainController.Get"), 307)
 	}
+
+	user := c.GetSession("user")
+	c.Data["IsUserLogged"] = user != nil
 
 	rv := &models.Review{}
 	reviews := rv.AllByBook(bookId)
@@ -34,7 +37,7 @@ func (c *UserBookReviewController) Reviews() {
 func (c *UserBookReviewController) Get() {
 	user := c.GetSession("user")
 	if user == nil {
-		c.Redirect("index", 307)
+		c.Redirect(c.URLFor("MainController.Get"), 307)
 	}
 
 	fd := beego.ReadFromRequest(&c.Controller)
@@ -67,7 +70,7 @@ func (c *UserBookReviewController) New() {
 		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
-		c.Redirect("/index", 303)
+		c.Redirect(c.URLFor("MainController.Get"), 303)
 	}
 
 	review, err := forms.ToModel(reviewForm)
@@ -86,5 +89,5 @@ func (c *UserBookReviewController) New() {
 		}
 	}
 
-	c.Redirect("/index", 303)
+	c.Redirect(c.URLFor("MainController.Get"), 303)
 }

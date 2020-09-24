@@ -44,15 +44,15 @@ func (c *LoginController) Post() {
 			flash.Store(&c.Controller)
 		} else {
 			c.SetSession("user", user)
-			c.Redirect("index", 303)
+			c.Redirect(c.URLFor("MainController.Get"), 303)
 		}
 	}
 
-	c.Redirect("login", 303)
+	c.Redirect(c.URLFor("LoginController.Get"), 303)
 }
 
 // Logout function
 func (c *LoginController) Logout() {
 	c.DestroySession()
-	c.Redirect("index", 307)
+	c.Redirect(c.URLFor("MainController.Get"), 307)
 }

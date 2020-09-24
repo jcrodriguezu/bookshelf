@@ -47,7 +47,11 @@
         <td>{{.AvailableCopies}}</td>
         <td>
         {{ if eq (.GetReviews | len) 0 }}
-          {{ 0 }}
+          {{ if $isUserLogged }}
+            <a href="{{ urlfor "UserBookReviewController.Get" "bookid" .Id}}">Add review</a>
+          {{ else }}
+            0
+          {{ end }}
         {{ else }}
           <a href="{{ urlfor "UserBookReviewController.Reviews" "bookid" .Id}}">{{ .GetReviews | len }}</a>
         {{ end }}

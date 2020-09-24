@@ -22,7 +22,7 @@ func (c *UserBookController) LendBook() {
 		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
-		c.Redirect("/index", 307)
+		c.Redirect(c.URLFor("MainController.Get"), 307)
 	}
 
 	if err = user.(*models.User).LendBook(bookId); err != nil {
@@ -30,7 +30,7 @@ func (c *UserBookController) LendBook() {
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	}
-	c.Redirect("/index", 307)
+	c.Redirect(c.URLFor("MainController.Get"), 307)
 }
 
 // ReturnBook ...
@@ -44,7 +44,7 @@ func (c *UserBookController) ReturnBook() {
 		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
-		c.Redirect("/index", 307)
+		c.Redirect(c.URLFor("MainController.Get"), 307)
 	}
 
 	if err = user.(*models.User).ReturnBook(bookId); err != nil {
@@ -52,5 +52,5 @@ func (c *UserBookController) ReturnBook() {
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	}
-	c.Redirect("/index", 307)
+	c.Redirect(c.URLFor("MainController.Get"), 307)
 }

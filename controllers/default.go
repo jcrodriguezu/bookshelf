@@ -26,7 +26,7 @@ func (c *MainController) Get() {
 			beego.Info(err)
 			flash.Error(err.Error())
 			flash.Store(&c.Controller)
-			c.Redirect("index", 307)
+			c.Redirect(c.URLFor("MainController.Get"), 307)
 		}
 		c.Data["UserId"] = u.Id
 		c.Data["UserName"] = u.Name

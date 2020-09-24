@@ -52,7 +52,7 @@ func (c *BookController) New() {
 		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
-		c.Redirect("/index", 303)
+		c.Redirect(c.URLFor("MainController.Get"), 303)
 	}
 
 	book, err := forms.ToModel(bookForm)
@@ -70,14 +70,15 @@ func (c *BookController) New() {
 			flash.Store(&c.Controller)
 		}
 	}
-	c.Redirect("/book", 303)
+
+	c.Redirect(c.URLFor("BookController.Get"), 303)
 }
 
 // Edit book
 func (c *BookController) Edit() {
 	user := c.GetSession("user")
 	if user == nil {
-		c.Redirect("index", 307)
+		c.Redirect(c.URLFor("MainController.Get"), 307)
 	}
 
 	flash := beego.NewFlash()
@@ -87,7 +88,7 @@ func (c *BookController) Edit() {
 		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
-		c.Redirect("index", 303)
+		c.Redirect(c.URLFor("MainController.Get"), 303)
 	}
 
 	book, err := forms.ToModel(bookForm)
@@ -105,14 +106,14 @@ func (c *BookController) Edit() {
 			flash.Store(&c.Controller)
 		}
 	}
-	c.Redirect("/index", 303)
+	c.Redirect(c.URLFor("MainController.Get"), 303)
 }
 
 // Remove book
 func (c *BookController) Remove() {
 	user := c.GetSession("user")
 	if user != nil {
-		c.Redirect("/index", 307)
+		c.Redirect(c.URLFor("MainController.Get"), 307)
 	}
 
 	flash := beego.NewFlash()
@@ -130,5 +131,5 @@ func (c *BookController) Remove() {
 			flash.Store(&c.Controller)
 		}
 	}
-	c.Redirect("/index", 303)
+	c.Redirect(c.URLFor("MainController.Get"), 303)
 }

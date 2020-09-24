@@ -43,9 +43,9 @@ func initialData() {
 	fmt.Println(o.Insert(ra))
 
 	u1 := new(models.User)
-	u1.Name = "Juanca"
-	u1.Username = "juanca"
-	u1.Password = "juanca"
+	u1.Name = "Admin"
+	u1.Username = "admin"
+	u1.Password = "admin"
 	u1.Role = ra
 	fmt.Println(o.Insert(u1))
 
@@ -59,19 +59,6 @@ func initialData() {
 	u2.Password = "test"
 	u2.Role = ru
 	fmt.Println(o.Insert(u2))
-
-	b := new(models.Book)
-	b.Author = "Popeye"
-	b.Copies = 3
-	b.Title = "The new adventures of Popeye"
-	fmt.Println(o.Insert(b))
-
-	rv := new(models.Review)
-	rv.Title = "It's a great book"
-	rv.Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud."
-	rv.User = u2
-	rv.Book = b
-	fmt.Println(o.Insert(rv))
 }
 
 func main() {
@@ -79,7 +66,11 @@ func main() {
 		panic(err)
 	}
 
-	beego.InsertFilter("/*", beego.BeforeRouter, filters.LoginFilter)
+	beego.InsertFilter("/logout", beego.BeforeRouter, filters.AuthFilter)
+	beego.InsertFilter("/book/*", beego.BeforeRouter, filters.AuthFilter)
+	beego.InsertFilter("/review/get", beego.BeforeRouter, filters.AuthFilter)
+	beego.InsertFilter("/review/new", beego.BeforeRouter, filters.AuthFilter)
+
 	beego.AddFuncMap("HasBook", models.HasBook)
 
 	beego.Run()

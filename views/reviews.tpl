@@ -16,7 +16,10 @@
 
   {{ template "header.html" . }}
   
-  <a href="{{ urlfor "UserBookReviewController.Get" "bookid" .Id }}">New review</a> | <a href="/index">Return</a><br><br>
+  {{ if .IsUserLogged }}
+  <a href="{{ urlfor "UserBookReviewController.Get" "bookid" .Id }}">New review</a> | 
+  {{ end }}
+  <a href="/index">Return</a><br><br>
   <div class="review">
   {{ range .Reviews }}
   <div class="review-detail">
