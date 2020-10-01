@@ -45,6 +45,7 @@ func (c *LoginController) Post() {
 		} else {
 			c.SetSession("user", user)
 			c.Redirect(c.URLFor("MainController.Get"), 303)
+			return
 		}
 	}
 
