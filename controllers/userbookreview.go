@@ -4,20 +4,19 @@ import (
 	"bookshelf/forms"
 	"bookshelf/models"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego/v2/server/web"
 )
 
 // UserBookReviewController ...
 type UserBookReviewController struct {
-	beego.Controller
+	web.Controller
 }
 
 // Reviews ...
 func (c *UserBookReviewController) Reviews() {
-	flash := beego.NewFlash()
+	flash := web.NewFlash()
 	bookId, err := c.GetInt("bookid")
 	if err != nil {
-		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 		c.Redirect(c.URLFor("MainController.Get"), 307)
@@ -40,7 +39,7 @@ func (c *UserBookReviewController) Get() {
 		c.Redirect(c.URLFor("MainController.Get"), 307)
 	}
 
-	fd := beego.ReadFromRequest(&c.Controller)
+	fd := web.ReadFromRequest(&c.Controller)
 	c.Data["flash"] = fd.Data
 
 	reviewform := &forms.ReviewForm{}
@@ -48,8 +47,7 @@ func (c *UserBookReviewController) Get() {
 
 	bookid, err := c.GetInt("bookid")
 	if err != nil {
-		flash := beego.NewFlash()
-		beego.Info(err)
+		flash := web.NewFlash()
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	}
@@ -63,11 +61,10 @@ func (c *UserBookReviewController) Get() {
 
 // New ...
 func (c *UserBookReviewController) New() {
-	flash := beego.NewFlash()
+	flash := web.NewFlash()
 
 	reviewForm := &forms.ReviewForm{}
 	if err := c.ParseForm(reviewForm); err != nil {
-		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 		c.Redirect(c.URLFor("MainController.Get"), 303)
@@ -75,12 +72,10 @@ func (c *UserBookReviewController) New() {
 
 	review, err := forms.ToModel(reviewForm)
 	if err != nil {
-		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	} else {
 		if err := review.(*models.Review).Insert(); err != nil {
-			beego.Info(err)
 			flash.Error(err.Error())
 			flash.Store(&c.Controller)
 		} else {

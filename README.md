@@ -2,6 +2,8 @@
 This is a demo project for Beego. 
 It simulates a bookshelf where the user can lend, return, and review a book; the administrator role can create and delete books.
 
+check the beego documentation in: https://beego.vip/docs/intro/
+
 ## Features:
 * Controllers: Sessions, Flahs messages and redirects
 * Filters: Auth validation filter and redirect

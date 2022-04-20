@@ -3,17 +3,17 @@ package controllers
 import (
 	"bookshelf/models"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego/v2/server/web"
 )
 
 // MainController struct
 type MainController struct {
-	beego.Controller
+	web.Controller
 }
 
 // Get method
 func (c *MainController) Get() {
-	fd := beego.ReadFromRequest(&c.Controller)
+	fd := web.ReadFromRequest(&c.Controller)
 	c.Data["flash"] = fd.Data
 
 	user := c.GetSession("user")
@@ -22,8 +22,7 @@ func (c *MainController) Get() {
 		u := user.(*models.User)
 		if err := u.Read(); err != nil {
 			c.DelSession("user")
-			flash := beego.NewFlash()
-			beego.Info(err)
+			flash := web.NewFlash()
 			flash.Error(err.Error())
 			flash.Store(&c.Controller)
 			c.Redirect(c.URLFor("MainController.Get"), 307)

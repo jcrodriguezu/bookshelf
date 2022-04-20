@@ -6,8 +6,8 @@ import (
 	_ "bookshelf/routers"
 	"fmt"
 
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
+	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/server/web"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -36,7 +36,6 @@ func startDb(force bool) error {
 
 func initialData() {
 	o := orm.NewOrm()
-	o.Using("default")
 
 	ra := new(models.Role)
 	ra.Name = "adm"
@@ -66,12 +65,12 @@ func main() {
 		panic(err)
 	}
 
-	beego.InsertFilter("/logout", beego.BeforeRouter, filters.AuthFilter)
-	beego.InsertFilter("/book/*", beego.BeforeRouter, filters.AuthFilter)
-	beego.InsertFilter("/review/get", beego.BeforeRouter, filters.AuthFilter)
-	beego.InsertFilter("/review/new", beego.BeforeRouter, filters.AuthFilter)
+	web.BeeApp.InsertFilter("/logout", web.BeforeRouter, filters.AuthFilter)
+	web.BeeApp.InsertFilter("/book/*", web.BeforeRouter, filters.AuthFilter)
+	web.BeeApp.InsertFilter("/review/get", web.BeforeRouter, filters.AuthFilter)
+	web.BeeApp.InsertFilter("/review/new", web.BeforeRouter, filters.AuthFilter)
 
-	beego.AddFuncMap("HasBook", models.HasBook)
+	web.AddFuncMap("HasBook", models.HasBook)
 
-	beego.Run()
+	web.Run()
 }

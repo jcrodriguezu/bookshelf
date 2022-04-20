@@ -3,30 +3,29 @@ package controllers
 import (
 	"bookshelf/models"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego/v2/server/web"
 )
 
 // UserBookController ...
 type UserBookController struct {
-	beego.Controller
+	web.Controller
 }
 
 // LendBook ...
 func (c *UserBookController) LendBook() {
 	user := c.GetSession("user")
 
-	flash := beego.NewFlash()
+	flash := web.NewFlash()
 
 	bookId, err := c.GetInt("bookid")
 	if err != nil {
-		beego.Info(err)
+
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 		c.Redirect(c.URLFor("MainController.Get"), 307)
 	}
 
 	if err = user.(*models.User).LendBook(bookId); err != nil {
-		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	}
@@ -37,18 +36,16 @@ func (c *UserBookController) LendBook() {
 func (c *UserBookController) ReturnBook() {
 	user := c.GetSession("user")
 
-	flash := beego.NewFlash()
+	flash := web.NewFlash()
 
 	bookId, err := c.GetInt("bookid")
 	if err != nil {
-		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 		c.Redirect(c.URLFor("MainController.Get"), 307)
 	}
 
 	if err = user.(*models.User).ReturnBook(bookId); err != nil {
-		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	}

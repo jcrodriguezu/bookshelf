@@ -4,17 +4,17 @@ import (
 	"bookshelf/forms"
 	"bookshelf/models"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego/v2/server/web"
 )
 
 // LoginController struct
 type LoginController struct {
-	beego.Controller
+	web.Controller
 }
 
 // Get Login function
 func (c *LoginController) Get() {
-	fd := beego.ReadFromRequest(&c.Controller)
+	fd := web.ReadFromRequest(&c.Controller)
 	c.Data["flash"] = fd.Data
 
 	c.Data["Form"] = &forms.LoginForm{}
@@ -23,23 +23,20 @@ func (c *LoginController) Get() {
 
 // Post Login function
 func (c *LoginController) Post() {
-	flash := beego.NewFlash()
+	flash := web.NewFlash()
 
 	loginForm := &forms.LoginForm{}
 	if err := c.ParseForm(loginForm); err != nil {
-		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	}
 
 	user, err := forms.ToModel(loginForm)
 	if err != nil {
-		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	} else {
 		if err := user.(*models.User).DoLogin(); err != nil {
-			beego.Info(err)
 			flash.Error(err.Error())
 			flash.Store(&c.Controller)
 		} else {

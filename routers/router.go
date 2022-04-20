@@ -3,21 +3,21 @@ package routers
 import (
 	"bookshelf/controllers"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego/v2/server/web"
 )
 
 func init() {
-	beego.Router("/", &controllers.MainController{})
-	beego.Router("/index", &controllers.MainController{})
-	beego.Router("/login", &controllers.LoginController{})
-	beego.Router("/logout", &controllers.LoginController{}, "*:Logout")
-	beego.Router("/book/get", &controllers.BookController{})
-	beego.Router("/book/new", &controllers.BookController{}, "post:New")
-	beego.Router("/book/edit", &controllers.BookController{}, "post:Edit")
-	beego.Router("/book/remove", &controllers.BookController{}, "get:Remove")
-	beego.Router("/book/lend", &controllers.UserBookController{}, "*:LendBook")
-	beego.Router("/book/return", &controllers.UserBookController{}, "*:ReturnBook")
-	beego.Router("/review/get", &controllers.UserBookReviewController{})
-	beego.Router("/review/new", &controllers.UserBookReviewController{}, "post:New")
-	beego.Router("/review/list", &controllers.UserBookReviewController{}, "*:Reviews")
+	web.Router("/", &controllers.MainController{})
+	web.Router("/index", &controllers.MainController{})
+	web.Router("/login", &controllers.LoginController{})
+	web.Router("/logout", &controllers.LoginController{}, "*:Logout")
+	web.Router("/book/get", &controllers.BookController{})
+	web.Router("/book/new", &controllers.BookController{}, "post:New")
+	web.Router("/book/edit", &controllers.BookController{}, "post:Edit")
+	web.Router("/book/remove", &controllers.BookController{}, "get:Remove")
+	web.Router("/book/lend", &controllers.UserBookController{}, "*:LendBook")
+	web.Router("/book/return", &controllers.UserBookController{}, "*:ReturnBook")
+	web.Router("/review/get", &controllers.UserBookReviewController{})
+	web.Router("/review/new", &controllers.UserBookReviewController{}, "post:New")
+	web.Router("/review/list", &controllers.UserBookReviewController{}, "*:Reviews")
 }

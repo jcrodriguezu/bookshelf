@@ -11,8 +11,8 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
+	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/server/web"
 	_ "github.com/mattn/go-sqlite3"
 	. "github.com/smartystreets/goconvey/convey"
 )
@@ -29,8 +29,8 @@ func init() {
 	orm.RegisterDriver("sqlite3", orm.DRSqlite)
 	orm.RegisterDataBase("default", "sqlite3", "file:test.db")
 
-	beego.AddFuncMap("HasBook", HasBook)
-	beego.TestBeegoInit(apppath)
+	web.AddFuncMap("HasBook", HasBook)
+	web.TestBeegoInit(apppath)
 }
 
 // TestDefault is a sample to run an endpoint test
@@ -40,7 +40,7 @@ func TestDefault(t *testing.T) {
 			orm.RunSyncdb("default", true, false)
 			r, _ := http.NewRequest("GET", "/", nil)
 			w := httptest.NewRecorder()
-			beego.BeeApp.Handlers.ServeHTTP(w, r)
+			web.BeeApp.Handlers.ServeHTTP(w, r)
 
 			Convey("Status Code Should Be 200", func() {
 				So(w.Code, ShouldEqual, 200)
@@ -63,7 +63,7 @@ func TestDefault(t *testing.T) {
 
 			r, _ := http.NewRequest("GET", "/", nil)
 			w := httptest.NewRecorder()
-			beego.BeeApp.Handlers.ServeHTTP(w, r)
+			web.BeeApp.Handlers.ServeHTTP(w, r)
 
 			Convey("Status Code Should Be 200", func() {
 				So(w.Code, ShouldEqual, 200)
@@ -97,7 +97,7 @@ func TestLogin(t *testing.T) {
 				"password": {"test"},
 			}
 			w := httptest.NewRecorder()
-			beego.BeeApp.Handlers.ServeHTTP(w, r)
+			web.BeeApp.Handlers.ServeHTTP(w, r)
 
 			Convey("Status Code Should Be 303\t", func() {
 				So(w.Code, ShouldEqual, 303)
@@ -118,7 +118,7 @@ func TestLogin(t *testing.T) {
 				"password": {"test"},
 			}
 			w := httptest.NewRecorder()
-			beego.BeeApp.Handlers.ServeHTTP(w, r)
+			web.BeeApp.Handlers.ServeHTTP(w, r)
 
 			Convey("Status Code Should Be 303\t", func() {
 				So(w.Code, ShouldEqual, 303)

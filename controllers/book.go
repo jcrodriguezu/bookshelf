@@ -4,17 +4,17 @@ import (
 	"bookshelf/forms"
 	"bookshelf/models"
 
-	"github.com/astaxie/beego"
+	"github.com/beego/beego/v2/server/web"
 )
 
 // BookController ...
 type BookController struct {
-	beego.Controller
+	web.Controller
 }
 
 // Get ...
 func (c *BookController) Get() {
-	fd := beego.ReadFromRequest(&c.Controller)
+	fd := web.ReadFromRequest(&c.Controller)
 	c.Data["flash"] = fd.Data
 
 	bookform := &forms.BookForm{}
@@ -24,8 +24,7 @@ func (c *BookController) Get() {
 	if err == nil {
 		book := &models.Book{Id: id}
 		if err := book.Read(); err != nil {
-			flash := beego.NewFlash()
-			beego.Info(err)
+			flash := web.NewFlash()
 			flash.Error(err.Error())
 			flash.Store(&c.Controller)
 		} else {
@@ -45,11 +44,10 @@ func (c *BookController) Get() {
 
 // New book
 func (c *BookController) New() {
-	flash := beego.NewFlash()
+	flash := web.NewFlash()
 
 	bookForm := &forms.BookForm{}
 	if err := c.ParseForm(bookForm); err != nil {
-		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 		c.Redirect(c.URLFor("MainController.Get"), 303)
@@ -57,12 +55,10 @@ func (c *BookController) New() {
 
 	book, err := forms.ToModel(bookForm)
 	if err != nil {
-		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	} else {
 		if err := book.(*models.Book).Insert(); err != nil {
-			beego.Info(err)
 			flash.Error(err.Error())
 			flash.Store(&c.Controller)
 		} else {
@@ -81,11 +77,10 @@ func (c *BookController) Edit() {
 		c.Redirect(c.URLFor("MainController.Get"), 307)
 	}
 
-	flash := beego.NewFlash()
+	flash := web.NewFlash()
 
 	bookForm := &forms.BookForm{}
 	if err := c.ParseForm(bookForm); err != nil {
-		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 		c.Redirect(c.URLFor("MainController.Get"), 303)
@@ -93,12 +88,10 @@ func (c *BookController) Edit() {
 
 	book, err := forms.ToModel(bookForm)
 	if err != nil {
-		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	} else {
 		if err := book.(*models.Book).Update(); err != nil {
-			beego.Info(err)
 			flash.Error(err.Error())
 			flash.Store(&c.Controller)
 		} else {
@@ -116,17 +109,15 @@ func (c *BookController) Remove() {
 		c.Redirect(c.URLFor("MainController.Get"), 307)
 	}
 
-	flash := beego.NewFlash()
+	flash := web.NewFlash()
 
 	id, err := c.GetInt("id")
 	if err != nil {
-		beego.Info(err)
 		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 	} else {
 		book := &models.Book{Id: id}
 		if err := book.Delete(); err != nil {
-			beego.Info(err)
 			flash.Error(err.Error())
 			flash.Store(&c.Controller)
 		}
