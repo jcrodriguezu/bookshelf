@@ -31,6 +31,7 @@ func (c *BookController) Get() {
 			c.Data["Action"] = "BookController.Edit"
 			bookform = &forms.BookForm{
 				Id:     book.Id,
+				Isbn:   book.Isbn,
 				Title:  book.Title,
 				Author: book.Author,
 				Copies: book.Copies,

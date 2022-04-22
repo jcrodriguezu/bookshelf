@@ -8,7 +8,8 @@ import (
 
 // Book model
 type Book struct {
-	Id      int `orm:"pk, auto"`
+	Id      int    `orm:"pk, auto"`
+	Isbn    string `orm:"unique"`
 	Title   string
 	Author  string
 	Copies  int       `orm:"default(0)"`

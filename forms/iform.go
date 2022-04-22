@@ -19,7 +19,7 @@ func ToModel(form IForm) (models.IModel, error) {
 		if err != nil {
 			return nil, err
 		}
-		return nil, fmt.Errorf("All the fields are required")
+		return nil, fmt.Errorf("all the fields are required")
 	}
 
 	return form.ToModel()

@@ -32,6 +32,7 @@
       <caption>Books available</caption>
       <tr>
         <th>Title</th>
+        <th>Isbn</th>
         <th>Author</th>
         <th>Available Copies</th>
         <th>Reviews</th>
@@ -43,6 +44,7 @@
       {{ range .Books }}
       <tr>
         <td>{{.Title}}</td>
+        <td>{{.Isbn}}</td>
         <td>{{.Author}}</td>
         <td>{{.AvailableCopies}}</td>
         <td>
