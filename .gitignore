@@ -27,3 +27,4 @@ bee.json
 bookshelf
 .vscode/settings.json
 bookshelf.db
+.env

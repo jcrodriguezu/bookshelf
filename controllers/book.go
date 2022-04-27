@@ -3,6 +3,9 @@ package controllers
 import (
 	"bookshelf/forms"
 	"bookshelf/models"
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
 
 	"github.com/beego/beego/v2/server/web"
 )
@@ -124,4 +127,45 @@ func (c *BookController) Remove() {
 		}
 	}
 	c.Redirect(c.URLFor("MainController.Get"), 303)
+}
+
+// Search the isbn number and fetch the book information
+func (c *BookController) SearchIsbn() {
+	if c.GetSession("user") == nil {
+		return
+	}
+
+	isbn := c.Ctx.Input.Param(":isbn")
+
+	c.Ctx.Output.Header("Content-Type", "application/json")
+	resp, err := http.Get("https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn)
+	if err != nil {
+		c.Ctx.Output.Body([]byte(`{"error": "` + err.Error() + `"}`))
+		return
+	}
+
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		c.Ctx.Output.Body([]byte(`{"error": "` + err.Error() + `"}`))
+		return
+	}
+
+	var dat map[string]interface{}
+	if err := json.Unmarshal(body, &dat); err != nil {
+		c.Ctx.Output.Body([]byte(`{"error": "` + err.Error() + `"}`))
+		return
+	}
+
+	if dat["totalItems"].(float64) == 1 {
+		var info = dat["items"].([]interface{})[0].(map[string]interface{})
+		var title = info["volumeInfo"].(map[string]interface{})["title"].(string)
+		var author = info["volumeInfo"].(map[string]interface{})["authors"].([]interface{})[0].(string)
+		d := map[string]string{"title": title, "author": author}
+		enc_json, _ := json.Marshal(d)
+		c.Ctx.Output.Body(enc_json)
+	}
+
+	c.Ctx.Output.Body(nil)
 }

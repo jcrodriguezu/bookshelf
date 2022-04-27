@@ -9,9 +9,9 @@ import (
 // BookForm ...
 type BookForm struct {
 	Id     int    `form:",hidden, " valid:"int"`
-	Isbn   string `form:"Isbn" valid:"isbn"`
-	Title  string `form:"title" valid:"required"`
-	Author string `form:"author" valid:"required"`
+	Isbn   string `form:"Isbn" id:"isbn" valid:"isbn"`
+	Title  string `form:"title" id:"title" valid:"required"`
+	Author string `form:"author" id:"author" valid:"required"`
 	Copies int    `form:"copies" valid:"int, required"`
 }
 

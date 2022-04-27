@@ -23,5 +23,35 @@
         </form>
     </div>
     {{ template "footer.html" }}
+
+<script>
+document.body.onload = function(){
+    document.getElementById("isbn").onblur = function() {
+        console.log("Lost focus");
+        const isbn = document.getElementById("isbn").value;
+        if (isbn === "") {
+            console.log("Isbn is empty");
+        } else {
+            searchBook(isbn)
+        }
+    }
+}
+
+
+function searchBook(book_isbn) {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function() {
+        const resp = JSON.parse(this.responseText)
+        if (resp) {
+            document.getElementById("title").value = resp.title;
+            document.getElementById("author").value = resp.author;
+        }
+    }
+
+    xhttp.open("GET", "/scrap/" + book_isbn, true);
+    xhttp.send();
+}
+</script>
+
 </body>
 </html>

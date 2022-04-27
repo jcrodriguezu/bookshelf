@@ -7,6 +7,7 @@ require (
 	github.com/beego/beego/v2 v2.0.2
 	github.com/mattn/go-sqlite3 v1.14.12
 	github.com/smartystreets/goconvey v1.7.2
+	github.com/joho/godotenv v1.4.0
 )
 
 require (
