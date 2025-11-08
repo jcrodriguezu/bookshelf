@@ -20,16 +20,19 @@
     {{ $isUserLogged := .IsUserLogged }}
     {{ $userRole := .UserRole }}
     {{ $userId := .UserId }}
-    <div>
+
+    <div class="user-info">
     {{ if $isUserLogged }}
-    Welcome back <b>{{ .UserName }}</b> | <a href="{{ urlfor "LoginController.Logout"}}">Logout</a>
+    Welcome back <b>{{ .UserName }}</b> | <a href="{{ urlfor "LoginController.Logout"}}" class="link-logout">Logout</a>
     {{ else }}
-    <a href="{{ urlfor "LoginController.Get"}}">Login</a>
+    <a href="{{ urlfor "LoginController.Get"}}" class="link-login">Login</a>
     {{ end }}
     </div>
+
     {{ if .Books }}
-    <table border="1" style="width:100%">
-      <caption>Books available</caption>
+    <div class="books-container">
+      <h2 class="books-title">Books Available</h2>
+      <table class="books-table">
       <tr>
         <th>Title</th>
         <th>Isbn</th>
@@ -73,17 +76,19 @@
         {{ end }}
       </tr>
       {{ end }}
-    </table>
+      </table>
+    </div>
     {{ else }}
-      No books available
+      <p class="no-books">No books available</p>
     {{ end }}
-  </div>
-  <div>
-  {{ if $isUserLogged }}
-  {{ if eq $userRole "adm" }}
-  <a href="{{ urlfor "BookController.Get" }}">Add new book</a>
-  {{ end }}
-  {{ end }}
+
+    {{ if $isUserLogged }}
+    {{ if eq $userRole "adm" }}
+    <div class="admin-actions">
+      <a href="{{ urlfor "BookController.Get" }}" class="btn-add-book">Add new book</a>
+    </div>
+    {{ end }}
+    {{ end }}
   </div>
   {{ template "footer.html" }}
 </body>

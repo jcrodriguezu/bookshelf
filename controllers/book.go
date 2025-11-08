@@ -4,6 +4,8 @@ import (
 	"bookshelf/forms"
 	"bookshelf/models"
 	"encoding/json"
+	"strings"
+
 	"io/ioutil"
 	"net/http"
 
@@ -137,8 +139,15 @@ func (c *BookController) SearchIsbn() {
 
 	isbn := c.Ctx.Input.Param(":isbn")
 
+	// Clean ISBN: remove hyphens and spaces
+	cleanISBN := strings.ReplaceAll(isbn, "-", "")
+	cleanISBN = strings.ReplaceAll(cleanISBN, " ", "")
+
 	c.Ctx.Output.Header("Content-Type", "application/json")
-	resp, err := http.Get("https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn)
+
+	// Use Open Library Books API
+	apiURL := "https://openlibrary.org/api/books?bibkeys=ISBN:" + cleanISBN + "&format=json&jscmd=data"
+	resp, err := http.Get(apiURL)
 	if err != nil {
 		c.Ctx.Output.Body([]byte(`{"error": "` + err.Error() + `"}`))
 		return
@@ -158,14 +167,38 @@ func (c *BookController) SearchIsbn() {
 		return
 	}
 
-	if dat["totalItems"].(float64) == 1 {
-		var info = dat["items"].([]interface{})[0].(map[string]interface{})
-		var title = info["volumeInfo"].(map[string]interface{})["title"].(string)
-		var author = info["volumeInfo"].(map[string]interface{})["authors"].([]interface{})[0].(string)
-		d := map[string]string{"title": title, "author": author}
-		enc_json, _ := json.Marshal(d)
-		c.Ctx.Output.Body(enc_json)
+	// Check if we have any results (Open Library returns empty object if not found)
+	if len(dat) == 0 {
+		c.Ctx.Output.Body([]byte(`{"error": "No book found for this ISBN"}`))
+		return
 	}
 
-	c.Ctx.Output.Body(nil)
+	// Get the book data using the ISBN key
+	bibKey := "ISBN:" + cleanISBN
+	bookData, ok := dat[bibKey].(map[string]interface{})
+	if !ok {
+		c.Ctx.Output.Body([]byte(`{"error": "No book found for this ISBN"}`))
+		return
+	}
+
+	// Extract title
+	title := ""
+	if titleVal, ok := bookData["title"].(string); ok {
+		title = titleVal
+	}
+
+	// Extract author (Open Library returns array of author objects with "name" field)
+	author := ""
+	if authors, ok := bookData["authors"].([]interface{}); ok && len(authors) > 0 {
+		if authorObj, ok := authors[0].(map[string]interface{}); ok {
+			if authorName, ok := authorObj["name"].(string); ok {
+				author = authorName
+			}
+		}
+	}
+
+	// Return the result
+	d := map[string]string{"title": title, "author": author}
+	enc_json, _ := json.Marshal(d)
+	c.Ctx.Output.Body(enc_json)
 }

@@ -67,17 +67,213 @@
   }
 
   .review {
-    text-align: center;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
     font-size: 16px;
-    /* border-style: double; */
   }
 
   .review-detail {
-    width: 300px;
-    margin: auto;
-    border: 1px solid red;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    padding: 20px;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    max-width: 600px;
+  }
+
+  .review-detail:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
   }
 
   .review-title {
     font-weight: bold;
+    font-size: 20px;
+    color: #2c3e50;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+  }
+
+  .review-body {
+    color: #555;
+    line-height: 1.6;
+    font-size: 15px;
+    padding: 10px 0;
+    text-align: left;
+  }
+
+  /* Review page action buttons */
+  .review-actions {
+    max-width: 800px;
+    margin: 20px auto 10px;
+    padding: 0 20px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .btn-review,
+  .btn-return {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+  }
+
+  .btn-review {
+    background-color: #3498db;
+    color: #ffffff;
+    border: 1px solid #2980b9;
+  }
+
+  .btn-review:hover {
+    background-color: #2980b9;
+    box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .btn-return {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    border: 1px solid #bdc3c7;
+  }
+
+  .btn-return:hover {
+    background-color: #bdc3c7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+  }
+
+  /* Main page styles */
+  .user-info {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 15px;
+  }
+
+  .link-logout,
+  .link-login {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .link-logout:hover,
+  .link-login:hover {
+    color: #2980b9;
+    text-decoration: underline;
+  }
+
+  /* Books container */
+  .books-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .books-title {
+    font-size: 24px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #3498db;
+    font-weight: bold;
+  }
+
+  /* Books table */
+  .books-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  .books-table th {
+    background: #ecf0f1;
+    color: #2c3e50;
+    font-weight: 600;
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 2px solid #3498db;
+    font-size: 14px;
+  }
+
+  .books-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+    color: #555;
+  }
+
+  .books-table tr:hover {
+    background-color: #f8f9fa;
+  }
+
+  .books-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .books-table a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .books-table a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+  }
+
+  /* Admin actions */
+  .admin-actions {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  .btn-add-book {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #27ae60;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 15px;
+    border: 1px solid #229954;
+    transition: all 0.2s ease;
+  }
+
+  .btn-add-book:hover {
+    background-color: #229954;
+    box-shadow: 0 3px 8px rgba(39, 174, 96, 0.3);
+    transform: translateY(-2px);
+  }
+
+  /* No books message */
+  .no-books {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    text-align: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+    color: #7f8c8d;
+    font-size: 16px;
   }
